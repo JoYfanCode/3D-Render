@@ -419,13 +419,81 @@ def LightPolygon(polygon, color):
         for j in range(rect[2], rect[3]):
             DrawPixelWithBuffer(i, j, x0, y0, z0, x1, y1, z1, x2, y2, z2, color)
 
+#with open("model_1.obj",'r') as f:
+
+#    n = 1000
+#    m = 1000
+#    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
+#    Data = f.readlines()
+#    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
+    
+#    VectorsF = []
+#    Polygons = []
+
+#    for line in Data:
+#        if(line[0]=='f'):
+#            VectorsF.append(line[2:-1])
+
+#    for line in VectorsF:
+#        xyz = line.split()
+#        numbers = []
+
+#        for i in xyz:
+#            numbers.append(i.split('/')[0])
+
+#        Polygons.append(numbers)
+
+#    VectorsV = []
+#    lines = []
+
+#    for line in Data:
+#        if(line[0]=='v' and line[1]==' '):
+#            VectorsV.append(line[2:-1])
+
+#    for line in VectorsV:
+#        xyz = line.split()
+#        x = int(5*n*float(xyz[1]) + n/2)
+#        y = int(5*m*float(xyz[0]) + m/2)
+#        z = int(5*n*float(xyz[2]))
+#        lines.append([x, y, z])
+        
+#    for i in Polygons:
+#        if (CosPolygon(i) < 0):
+#            LightPolygon(i, (150, 150, 150))
+        
+#    image = Image.fromarray(img,'RGB')
+#    image.save("Task14Image.png")
+
+#print("11-14 tasks ended up successfully")
+
+#endregion
+
+# Movement
+#region
+
+def Rotate(x, y, z):
+
+    alfa = 2*math.pi * 0 / 360
+    betta = 2*math.pi * 180 / 360
+    gamma = 2*math.pi * 180 / 360
+
+    X = np.array([x, y, z])
+
+    R1 = np.array([[1, 0, 0], [0, np.cos(alfa), np.sin(alfa)], [0, -np.sin(alfa), np.cos(alfa)]])
+    R2 = np.array([[np.cos(betta), 0, np.sin(betta)], [0, 1, 0], [-np.sin(betta), 0, np.cos(betta)]])
+    R3 = np.array([[np.cos(gamma), np.sin(gamma), 0], [-np.sin(gamma), np.cos(gamma), 0], [0, 0, 1]])
+
+    R = np.dot(np.dot(R1, R2), R3)
+    return np.dot(R, X)
+
+
 with open("model_1.obj",'r') as f:
 
     n = 1000
     m = 1000
     img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
     Data = f.readlines()
-    ZBuffer = [[n for x in range(n)] for x in range(n)]
+    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
     
     VectorsF = []
     Polygons = []
@@ -452,6 +520,7 @@ with open("model_1.obj",'r') as f:
 
     for line in VectorsV:
         xyz = line.split()
+        xyz = Rotate(float(xyz[0]), float(xyz[1]), float(xyz[2]))
         x = int(5*n*float(xyz[1]) + n/2)
         y = int(5*m*float(xyz[0]) + m/2)
         z = int(5*n*float(xyz[2]))
@@ -462,8 +531,8 @@ with open("model_1.obj",'r') as f:
             LightPolygon(i, (150, 150, 150))
         
     image = Image.fromarray(img,'RGB')
-    image.save("Task14Image.png")
+    image.save("Task15Image.png")
 
-print("11-14 tasks ended up successfully")
+print("15 tasks ended up successfully")
 
 #endregion
