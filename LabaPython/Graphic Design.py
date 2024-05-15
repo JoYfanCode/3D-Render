@@ -150,95 +150,97 @@ print("2 task ended up successfully")
 # region
 
 # Vertices
-with open("model_1.obj",'r') as f:
+#with open("model_1.obj",'r') as f:
 
-    n = 1000
-    m = 1000
-    img = np.full((n, m), 255, dtype=np.uint8)
-    Vectors = []
-    Data = f.readlines()
+#    n = 1000
+#    m = 1000
+#    img = np.full((n, m), 255, dtype=np.uint8)
+#    Vectors = []
+#    Data = f.readlines()
 
-    print("3 task ended up successfully")
+#    print("3 task ended up successfully")
     
-    for line in Data:
-        if(line[0]=='v'):
-            Vectors.append(line[2:-1])
+#    for line in Data:
+#        if(line[0]=='v' and line[1]==' '):
+#            Vectors.append(line[2:-1])
 
-    for line in Vectors:
-        xyz = line.split()
-        x = int(5*n*float(xyz[1]) + n/2)
-        y = int(5*m*float(xyz[0]) + m/2)
+#    for line in Vectors:
+#        xyz = line.split()
+#        x = int(5*n*float(xyz[1]) + n/2)
+#        y = int(5*m*float(xyz[0]) + m/2)
 
-        if (x >= 0 and x < n and y >= 0 and y < m):
-            img[x,y] = 0
+#        if (x >= 0 and x < n and y >= 0 and y < m):
+#            img[x,y] = 0
 
-    image = Image.fromarray(img,'L')
-    image.save("Task4Image.png")
+#    image = Image.fromarray(img,'L')
+#    image.save("Task4Image.png")
 
-print("4 task ended up successfully")
+#print("4 task ended up successfully")
 
 def DrawLine(x0, y0, x1, y1):
     x_loop_line(x0, y0, x1, y1)
 
-def DrawPolygon(points):
+def DrawPolygon(polygon):
 
-    line1 = lines[int(points[0])-1]
-    line2 = lines[int(points[1])-1]
-    line3 = lines[int(points[2])-1]
+    line1 = lines[int(polygon[0])-1]
+    line2 = lines[int(polygon[1])-1]
+    line3 = lines[int(polygon[2])-1]
 
     DrawLine(line1[0], line1[1], line2[0], line2[1])
     DrawLine(line2[0], line2[1], line3[0], line3[1])
     DrawLine(line3[0], line3[1], line1[0], line1[1])
 
 # Polygons
-with open("model_1.obj",'r') as f:
+#with open("model_1.obj",'r') as f:
 
-    n = 1000
-    m = 1000
-    img = np.full((n, m), 255, dtype=np.uint8)
-    Data = f.readlines()
+#    n = 1000
+#    m = 1000
+#    img = np.full((n, m), 255, dtype=np.uint8)
+#    Data = f.readlines()
     
-    VectorsF = []
-    Polygons = []
+#    VectorsF = []
+#    Polygons = []
 
-    for line in Data:
-        if(line[0]=='f'):
-            VectorsF.append(line[2:-1])
+#    for line in Data:
+#        if(line[0]=='f'):
+#            VectorsF.append(line[2:-1])
 
-    for line in VectorsF:
-        xyz = line.split()
-        numbers = []
+#    for line in VectorsF:
+#        xyz = line.split()
+#        numbers = []
 
-        for i in xyz:
-            numbers.append(i.split('/')[0])
+#        for i in xyz:
+#            numbers.append(i.split('/')[0])
 
-        Polygons.append(numbers)
+#        Polygons.append(numbers)
 
-    print("5 task ended up successfully")
+#    print("5 task ended up successfully")
 
-    VectorsV = []
-    lines = []
+#    VectorsV = []
+#    lines = []
 
-    for line in Data:
-        if(line[0]=='v'):
-            VectorsV.append(line[2:-1])
+#    for line in Data:
+#        if(line[0]=='v' and line[1]==' '):
+#            VectorsV.append(line[2:-1])
 
-    for line in VectorsV:
-        xyz = line.split()
-        x = int(5*n*float(xyz[1]) + n/2)
-        y = int(5*m*float(xyz[0]) + m/2)
-        lines.append([x,y])
+#    for line in VectorsV:
+#        xyz = line.split()
+#        x = int(5*n*float(xyz[1]) + n/2)
+#        y = int(5*m*float(xyz[0]) + m/2)
+#        lines.append([x,y])
         
-    for i in Polygons:
-        DrawPolygon(i)
+#    for i in Polygons:
+#        DrawPolygon(i)
         
-    image = Image.fromarray(img,'L')
-    image.save("Task6Image.png")
+#    image = Image.fromarray(img,'L')
+#    image.save("Task6Image.png")
 
-print("6 task ended up successfully")
+#print("6 task ended up successfully")
 
 #endregion
 
+# Colorful Models
+#region
 
 def Barycentering(x, y, x0, y0, x1, y1, x2, y2):
 
@@ -253,7 +255,7 @@ def Barycentering(x, y, x0, y0, x1, y1, x2, y2):
 
     lambda0 = ((x1 - x2)*(y - y2) - (y1 - y2)*(x - x2)) / ((x1 - x2)*(y0 - y2) - (y1 - y2)*(x0 - x2))
     lambda1 = ((x2 - x0)*(y - y0) - (y2 - y0)*(x - x0)) / ((x2 - x0)*(y1 - y0) - (y2 - y0)*(x1 - x0))
-    lambda2 = ((x0 - x1)*(y - y1) - (y0 - y1)*(x - x1)) / ((x0 - x1)*(y2 - y1) - (y0 - y1)*(x2 - x1))
+    lambda2 = 1.0 - lambda0 - lambda1
 
     return (lambda0, lambda1, lambda2)
 
@@ -276,7 +278,7 @@ def Rectangle(x0, y0, x1, y1, x2, y2):
     if (ymax > (m - 1)):
         ymax = m - 1
 
-    return(xmin, xmax, ymin, ymax)
+    return(int(xmin), int(xmax), int(ymin), int(ymax))
 
 def DrawPixel(x, y, x0, y0, x1, y1, x2, y2, color):
 
@@ -285,25 +287,137 @@ def DrawPixel(x, y, x0, y0, x1, y1, x2, y2, color):
     if (VectorBar[0] >= 0 and VectorBar[1] >= 0 and VectorBar[2] >= 0):
         img[x, y] = color
 
-def ColorPolygon(i):
+def ColorPolygon(polygon):
 
-    line1 = lines[int(i[0])-1]
-    line2 = lines[int(i[1])-1]
-    line3 = lines[int(i[2])-1]
+    line1 = lines[int(polygon[0])-1]
+    line2 = lines[int(polygon[1])-1]
+    line3 = lines[int(polygon[2])-1]
 
-    x0 = int(line1[0])
-    y0 = int(line1[1])
-    x1 = int(line2[0])
-    y1 = int(line2[1])
-    x2 = int(line3[0])
-    y2 = int(line3[1])
+    x0 = line1[0]
+    y0 = line1[1]
+    x1 = line2[0]
+    y1 = line2[1]
+    x2 = line3[0]
+    y2 = line3[1]
 
-    space = Rectangle(x0, y0, x1, y1, x2, y2)
+    rect = Rectangle(x0, y0, x1, y1, x2, y2)
     color = (randint(100, 200), randint(100, 200), randint(100, 200))
 
-    for i in range(space[0], space[1]):
-        for j in range(space[2], space[3]):
+    for i in range(rect[0], rect[1]):
+        for j in range(rect[2], rect[3]):
             DrawPixel(i, j, x0, y0, x1, y1, x2, y2, color)
+
+#with open("model_1.obj",'r') as f:
+
+#    n = 1000
+#    m = 1000
+#    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
+#    Data = f.readlines()
+    
+#    VectorsF = []
+#    Polygons = []
+
+#    for line in Data:
+#        if(line[0]=='f'):
+#            VectorsF.append(line[2:-1])
+
+#    for line in VectorsF:
+#        xyz = line.split()
+#        numbers = []
+
+#        for i in xyz:
+#            numbers.append(i.split('/')[0])
+
+#        Polygons.append(numbers)
+
+#    VectorsV = []
+#    lines = []
+
+#    for line in Data:
+#        if(line[0]=='v' and line[1]==' '):
+#            VectorsV.append(line[2:-1])
+
+#    for line in VectorsV:
+#        xyz = line.split()
+#        x = int(5*n*float(xyz[1]) + n/2)
+#        y = int(5*m*float(xyz[0]) + m/2)
+#        lines.append([x,y])
+        
+#    for i in Polygons:
+#        ColorPolygon(i)
+        
+#    image = Image.fromarray(img,'RGB')
+#    image.save("Task10Image.png")
+
+#print("7-10 tasks ended up successfully")
+
+#endregion
+
+# Light Models
+#region
+
+def CosPolygon(polygon):
+    
+    light = [0, 0, 1]
+
+    line1 = lines[int(polygon[0])-1]
+    line2 = lines[int(polygon[1])-1]
+    line3 = lines[int(polygon[2])-1]
+
+    x0 = line1[0]
+    y0 = line1[1]
+    z0 = line1[2]
+    x1 = line2[0]
+    y1 = line2[1]
+    z1 = line2[2]
+    x2 = line3[0]
+    y2 = line3[1]
+    z2 = line3[2]
+
+    xn = (y1 - y0)*(z1 - z2) - (y1 - y2)*(z1 - z0)
+    yn = (x1 - x2)*(z1 - z0) - (x1 - x0)*(z1 - z2)
+    zn = (x1 - x0)*(y1 - y2) - (x1 - x2)*(y1 - y0)
+
+    if (xn**2 + yn**2 + zn**2 != 0):
+        return (light[0]*xn + light[1]*yn + light[2]*zn) / math.sqrt(xn**2 + yn**2 + zn**2)
+    else:
+        return 1
+
+def DrawPixelWithBuffer(x, y, x0, y0, z0, x1, y1, z1, x2, y2, z2, color):
+
+    VectorBar = Barycentering(x, y, x0, y0, x1, y1, x2, y2)
+
+    if (VectorBar[0] >= 0 and VectorBar[1] >= 0 and VectorBar[2] >= 0):
+        ZBarKoef = VectorBar[0]*z0 + VectorBar[1]*z1 + VectorBar[2]*z2
+
+        if ZBarKoef <= ZBuffer[x][y]:
+            ZBuffer[x][y] = ZBarKoef
+            img[x, y] = color
+
+def LightPolygon(polygon, color):
+
+    line1 = lines[int(polygon[0])-1]
+    line2 = lines[int(polygon[1])-1]
+    line3 = lines[int(polygon[2])-1]
+
+    CosLight = CosPolygon(polygon)
+
+    x0 = line1[0]
+    y0 = line1[1]
+    z0 = line1[2]
+    x1 = line2[0]
+    y1 = line2[1]
+    z1 = line2[2]
+    x2 = line3[0]
+    y2 = line3[1]
+    z2 = line3[2]
+
+    rect = Rectangle(x0, y0, x1, y1, x2, y2)
+    color = (-color[0]*CosLight, -color[1]*CosLight, -color[2]*CosLight)
+
+    for i in range(rect[0], rect[1]):
+        for j in range(rect[2], rect[3]):
+            DrawPixelWithBuffer(i, j, x0, y0, z0, x1, y1, z1, x2, y2, z2, color)
 
 with open("model_1.obj",'r') as f:
 
@@ -311,6 +425,7 @@ with open("model_1.obj",'r') as f:
     m = 1000
     img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
     Data = f.readlines()
+    ZBuffer = [[n for x in range(n)] for x in range(n)]
     
     VectorsF = []
     Polygons = []
@@ -332,22 +447,23 @@ with open("model_1.obj",'r') as f:
     lines = []
 
     for line in Data:
-        if(line[0]=='v'):
+        if(line[0]=='v' and line[1]==' '):
             VectorsV.append(line[2:-1])
 
     for line in VectorsV:
         xyz = line.split()
         x = int(5*n*float(xyz[1]) + n/2)
         y = int(5*m*float(xyz[0]) + m/2)
-        lines.append([x,y])
+        z = int(5*n*float(xyz[2]))
+        lines.append([x, y, z])
         
     for i in Polygons:
-        ColorPolygon(i)
+        if (CosPolygon(i) < 0):
+            LightPolygon(i, (150, 150, 150))
         
     image = Image.fromarray(img,'RGB')
-    image.save("Task10Image.png")
+    image.save("Task14Image.png")
 
-print("7-10 tasks ended up successfully")
+print("11-14 tasks ended up successfully")
 
-    
-
+#endregion
