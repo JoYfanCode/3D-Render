@@ -3,7 +3,6 @@ from PIL import Image
 import math
 from random import randint
 
-
 # Squares
 # region
 
@@ -486,6 +485,212 @@ def Rotate(x, y, z):
     R = np.dot(np.dot(R1, R2), R3)
     return np.dot(R, X)
 
+def Move(x, y, z):
+
+    u0 = n/10
+    v0 = m/5.5
+    MultX = 8*n
+    MultY = 8*m
+
+    t = np.array([0.005, -0.005, 5.0])
+    k = np.array([[MultX, 0, u0], [0, MultY, v0], [0, 0, 1]])
+
+    X = np.array([x, y, z])
+    X = X + t
+    return np.dot(k, X)
+
+
+#with open("model_1.obj",'r') as f:
+
+#    n = 1000
+#    m = 1000
+#    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
+#    Data = f.readlines()
+#    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
+    
+#    VectorsF = []
+#    Polygons = []
+
+#    for line in Data:
+#        if(line[0]=='f'):
+#            VectorsF.append(line[2:-1])
+
+#    for line in VectorsF:
+#        xyz = line.split()
+#        numbers = []
+
+#        for i in xyz:
+#            numbers.append(i.split('/')[0])
+
+#        Polygons.append(numbers)
+
+#    VectorsV = []
+#    lines = []
+
+#    for line in Data:
+#        if(line[0]=='v' and line[1]==' '):
+#            VectorsV.append(line[2:-1])
+
+#    for line in VectorsV:
+#        xyz = line.split()
+
+#        xyz = Rotate(float(xyz[0]), float(xyz[1]), float(xyz[2]))
+#        xyz = Move(float(xyz[0]), float(xyz[1]), float(xyz[2]))
+#        xyz = [float(xyz[1]), float(xyz[0]), float(xyz[2])]
+
+#        lines.append([int(xyz[0]), int(xyz[1]), int(5*n*xyz[2])])
+        
+#    for i in Polygons:
+#        if (CosPolygon(i) < 0):
+#            LightPolygon(i, (150, 150, 150))
+        
+#    image = Image.fromarray(img,'RGB')
+#    image.save("Task16Image.png")
+
+#print("15-16 tasks ended up successfully")
+
+#endregion
+
+# Guro Light
+#region
+
+def guro(normalsPolygon):
+    
+    ilx = 0
+    ily = 0
+    ilz = 1
+    
+    nx = normalsPolygon[0]
+    ny = normalsPolygon[1]
+    nz = normalsPolygon[2]
+
+    w = nx*nx + ny*ny +nz*nz
+    s = ilx*ilx + ily*ily + ilz*ilz
+    
+    if (w != 0 and s != 0):
+        return (ilx*nx + ily*ny + ilz*nz)/(math.sqrt(w)*math.sqrt(s))
+    else:
+        return 1
+
+def DrawPixelGuro(x, y, x0, y0, z0, x1, y1, z1, x2, y2, z2, n):
+
+    l1 = light[int(n[0]) - 1]
+    l2 = light[int(n[1]) - 1]
+    l3 = light[int(n[2]) - 1]
+    VectorBar = Barycentering(x, y, x0, y0, x1, y1, x2, y2)
+
+    if (VectorBar[0] >= 0 and VectorBar[1] >= 0 and VectorBar[2] >= 0):
+        ZBarKoef = VectorBar[0]*z0 + VectorBar[1]*z1 + VectorBar[2]*z2
+
+        if ZBarKoef <= ZBuffer[x][y]:
+            ZBuffer[x][y] = ZBarKoef
+            img[x, y] = (-250 + 200*(VectorBar[0]*l1 + VectorBar[1]*l2  + VectorBar[2]*l3),
+                        -250 + 200*(VectorBar[0]*l1 + VectorBar[1]*l2  + VectorBar[2]*l3),
+                       -250 + 200*(VectorBar[0]*l1 + VectorBar[1]*l2  + VectorBar[2]*l3))
+
+
+def GuroLightPolygon(polygon, n):
+
+    line1 = lines[int(polygon[0])-1]
+    line2 = lines[int(polygon[1])-1]
+    line3 = lines[int(polygon[2])-1]
+
+    CosLight = CosPolygon(polygon)
+
+    x0 = line1[0]
+    y0 = line1[1]
+    z0 = line1[2]
+    x1 = line2[0]
+    y1 = line2[1]
+    z1 = line2[2]
+    x2 = line3[0]
+    y2 = line3[1]
+    z2 = line3[2]
+
+    rect = Rectangle(x0, y0, x1, y1, x2, y2)
+
+    for i in range(rect[0], rect[1]):
+        for j in range(rect[2], rect[3]):
+            DrawPixelGuro(i, j, x0, y0, z0, x1, y1, z1, x2, y2, z2, n)
+
+
+#with open("model_1.obj",'r') as f:
+
+#    n = 1000
+#    m = 1000
+#    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
+#    Data = f.readlines()
+#    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
+    
+#    VectorsF = []
+#    Polygons = []
+#    NormPolygons = []
+#    norm = []
+#    normals = []
+#    light = []
+
+#    for line in Data:
+#        if(line[0]=='f'):
+#            VectorsF.append(line[2:-1])
+
+#    for line in VectorsF:
+#        xyz = line.split()
+#        Numbers = []
+#        NormVertices = []
+
+#        for i in xyz:
+#            Numbers.append(i.split('/')[0])
+#            NormVertices.append(i.split('/')[2])
+
+#        Polygons.append(Numbers)
+#        NormPolygons.append(NormVertices)
+
+#    for line in Data:
+#        if((line[0]=='v')& (line[1]=='n') & (line[2]==' ')):
+#            norm.append(line[3:-1])
+
+#    for i in norm:
+#        norms = i.split()
+#        n1 = float(norms[0])
+#        n2 = float(norms[1])
+#        n3 = float(norms[2])
+#        normals.append([n1, n2, n3])
+
+#    for i in normals:
+#        light.append(guro(i))
+
+#    VectorsV = []
+#    lines = []
+
+#    for line in Data:
+#        if(line[0]=='v' and line[1]==' '):
+#            VectorsV.append(line[2:-1])
+
+#    for line in VectorsV:
+#        xyz = line.split()
+
+#        xyz = Rotate(float(xyz[0]), float(xyz[1]), float(xyz[2]))
+#        xyz = Move(float(xyz[0]), float(xyz[1]), float(xyz[2]))
+#        xyz = [float(xyz[1]), float(xyz[0]), float(xyz[2])]
+
+#        lines.append([int(xyz[0]), int(xyz[1]), int(5*n*xyz[2])])
+       
+#    index = 0
+#    for i in Polygons:
+#        if (CosPolygon(i) < 0):
+#            GuroLightPolygon(i, NormPolygons[index])
+#        index += 1
+        
+#    image = Image.fromarray(img,'RGB')
+#    image.save("Task17Image.png")
+
+#print("17 tasks ended up successfully")
+
+
+#endregion
+
+# Texturing
+#region
 
 with open("model_1.obj",'r') as f:
 
@@ -497,6 +702,10 @@ with open("model_1.obj",'r') as f:
     
     VectorsF = []
     Polygons = []
+    NormPolygons = []
+    norm = []
+    normals = []
+    light = []
 
     for line in Data:
         if(line[0]=='f'):
@@ -504,12 +713,29 @@ with open("model_1.obj",'r') as f:
 
     for line in VectorsF:
         xyz = line.split()
-        numbers = []
+        Numbers = []
+        NormVertices = []
 
         for i in xyz:
-            numbers.append(i.split('/')[0])
+            Numbers.append(i.split('/')[0])
+            NormVertices.append(i.split('/')[2])
 
-        Polygons.append(numbers)
+        Polygons.append(Numbers)
+        NormPolygons.append(NormVertices)
+
+    for line in Data:
+        if((line[0]=='v')& (line[1]=='n') & (line[2]==' ')):
+            norm.append(line[3:-1])
+
+    for i in norm:
+        norms = i.split()
+        n1 = float(norms[0])
+        n2 = float(norms[1])
+        n3 = float(norms[2])
+        normals.append([n1, n2, n3])
+
+    for i in normals:
+        light.append(guro(i))
 
     VectorsV = []
     lines = []
@@ -520,19 +746,23 @@ with open("model_1.obj",'r') as f:
 
     for line in VectorsV:
         xyz = line.split()
+
         xyz = Rotate(float(xyz[0]), float(xyz[1]), float(xyz[2]))
-        x = int(5*n*float(xyz[1]) + n/2)
-        y = int(5*m*float(xyz[0]) + m/2)
-        z = int(5*n*float(xyz[2]))
-        lines.append([x, y, z])
-        
+        xyz = Move(float(xyz[0]), float(xyz[1]), float(xyz[2]))
+        xyz = [float(xyz[1]), float(xyz[0]), float(xyz[2])]
+
+        lines.append([int(xyz[0]), int(xyz[1]), int(5*n*xyz[2])])
+       
+    index = 0
     for i in Polygons:
         if (CosPolygon(i) < 0):
-            LightPolygon(i, (150, 150, 150))
+            GuroLightPolygon(i, NormPolygons[index])
+        index += 1
         
     image = Image.fromarray(img,'RGB')
-    image.save("Task15Image.png")
+    image.save("Task18Image.png")
 
-print("15 tasks ended up successfully")
+print("18 tasks ended up successfully")
+
 
 #endregion
