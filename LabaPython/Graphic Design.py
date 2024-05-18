@@ -1,5 +1,5 @@
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageOps
 import math
 from random import randint
 
@@ -148,93 +148,93 @@ print("2 task ended up successfully")
 # Models
 # region
 
-# Vertices
-#with open("model_1.obj",'r') as f:
+# VerticesCoordinates
+with open("model_1.obj",'r') as f:
 
-#    n = 1000
-#    m = 1000
-#    img = np.full((n, m), 255, dtype=np.uint8)
-#    Vectors = []
-#    Data = f.readlines()
+    n = 1000
+    m = 1000
+    img = np.full((n, m), 255, dtype=np.uint8)
+    Vectors = []
+    Data = f.readlines()
 
-#    print("3 task ended up successfully")
+    print("3 task ended up successfully")
     
-#    for line in Data:
-#        if(line[0]=='v' and line[1]==' '):
-#            Vectors.append(line[2:-1])
+    for line in Data:
+        if(line[0]=='v' and line[1]==' '):
+            Vectors.append(line[2:-1])
 
-#    for line in Vectors:
-#        xyz = line.split()
-#        x = int(5*n*float(xyz[1]) + n/2)
-#        y = int(5*m*float(xyz[0]) + m/2)
+    for line in Vectors:
+        VerticeCoordinates = line.split()
+        x = int(5*n*float(VerticeCoordinates[1]) + n/2)
+        y = int(5*m*float(VerticeCoordinates[0]) + m/2)
 
-#        if (x >= 0 and x < n and y >= 0 and y < m):
-#            img[x,y] = 0
+        if (x >= 0 and x < n and y >= 0 and y < m):
+            img[x,y] = 0
 
-#    image = Image.fromarray(img,'L')
-#    image.save("Task4Image.png")
+    image = Image.fromarray(img,'L')
+    image.save("Task4Image.png")
 
-#print("4 task ended up successfully")
+print("4 task ended up successfully")
 
 def DrawLine(x0, y0, x1, y1):
     x_loop_line(x0, y0, x1, y1)
 
 def DrawPolygon(polygon):
 
-    line1 = lines[int(polygon[0])-1]
-    line2 = lines[int(polygon[1])-1]
-    line3 = lines[int(polygon[2])-1]
+    line1 = VerticesCoordinates[int(polygon[0])-1]
+    line2 = VerticesCoordinates[int(polygon[1])-1]
+    line3 = VerticesCoordinates[int(polygon[2])-1]
 
     DrawLine(line1[0], line1[1], line2[0], line2[1])
     DrawLine(line2[0], line2[1], line3[0], line3[1])
     DrawLine(line3[0], line3[1], line1[0], line1[1])
 
-# Polygons
-#with open("model_1.obj",'r') as f:
+# PolygonsNumbers
+with open("model_1.obj",'r') as f:
 
-#    n = 1000
-#    m = 1000
-#    img = np.full((n, m), 255, dtype=np.uint8)
-#    Data = f.readlines()
+    n = 1000
+    m = 1000
+    img = np.full((n, m), 255, dtype=np.uint8)
+    Data = f.readlines()
     
-#    VectorsF = []
-#    Polygons = []
+    LinesF = []
+    PolygonsNumbers = []
 
-#    for line in Data:
-#        if(line[0]=='f'):
-#            VectorsF.append(line[2:-1])
+    for line in Data:
+        if(line[0]=='f'):
+            LinesF.append(line[2:-1])
 
-#    for line in VectorsF:
-#        xyz = line.split()
-#        numbers = []
+    for line in LinesF:
+        VerticeCoordinates = line.split()
+        numbers = []
 
-#        for i in xyz:
-#            numbers.append(i.split('/')[0])
+        for i in VerticeCoordinates:
+            numbers.append(i.split('/')[0])
 
-#        Polygons.append(numbers)
+        PolygonsNumbers.append(numbers)
 
-#    print("5 task ended up successfully")
+    print("5 task ended up successfully")
 
-#    VectorsV = []
-#    lines = []
+    LinesV = []
+    VerticesCoordinates = []
 
-#    for line in Data:
-#        if(line[0]=='v' and line[1]==' '):
-#            VectorsV.append(line[2:-1])
+    for line in Data:
+        if(line[0]=='v' and line[1]==' '):
+            LinesV.append(line[2:-1])
 
-#    for line in VectorsV:
-#        xyz = line.split()
-#        x = int(5*n*float(xyz[1]) + n/2)
-#        y = int(5*m*float(xyz[0]) + m/2)
-#        lines.append([x,y])
+    for line in LinesV:
+        VerticeCoordinates = line.split()
+        x = int(5*n*float(VerticeCoordinates[1]) + n/2)
+        y = int(5*m*float(VerticeCoordinates[0]) + m/2)
+        VerticesCoordinates.append([x,y])
         
-#    for i in Polygons:
-#        DrawPolygon(i)
+    for i in PolygonsNumbers:
+        DrawPolygon(i)
         
-#    image = Image.fromarray(img,'L')
-#    image.save("Task6Image.png")
+    image = Image.fromarray(img,'L')
+    image.save("Task6Image.png")
 
-#print("6 task ended up successfully")
+print("6 task ended up successfully")
 
 #endregion
 
@@ -288,9 +288,9 @@ def DrawPixel(x, y, x0, y0, x1, y1, x2, y2, color):
 
 def ColorPolygon(polygon):
 
-    line1 = lines[int(polygon[0])-1]
-    line2 = lines[int(polygon[1])-1]
-    line3 = lines[int(polygon[2])-1]
+    line1 = VerticesCoordinates[int(polygon[0])-1]
+    line2 = VerticesCoordinates[int(polygon[1])-1]
+    line3 = VerticesCoordinates[int(polygon[2])-1]
 
     x0 = line1[0]
     y0 = line1[1]
@@ -306,62 +306,62 @@ def ColorPolygon(polygon):
         for j in range(rect[2], rect[3]):
             DrawPixel(i, j, x0, y0, x1, y1, x2, y2, color)
 
-#with open("model_1.obj",'r') as f:
+with open("model_1.obj",'r') as f:
 
-#    n = 1000
-#    m = 1000
-#    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
-#    Data = f.readlines()
+    n = 1000
+    m = 1000
+    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
+    Data = f.readlines()
     
-#    VectorsF = []
-#    Polygons = []
+    LinesF = []
+    PolygonsNumbers = []
 
-#    for line in Data:
-#        if(line[0]=='f'):
-#            VectorsF.append(line[2:-1])
+    for line in Data:
+        if(line[0]=='f'):
+            LinesF.append(line[2:-1])
 
-#    for line in VectorsF:
-#        xyz = line.split()
-#        numbers = []
+    for line in LinesF:
+        VerticeCoordinates = line.split()
+        numbers = []
 
-#        for i in xyz:
-#            numbers.append(i.split('/')[0])
+        for i in VerticeCoordinates:
+            numbers.append(i.split('/')[0])
 
-#        Polygons.append(numbers)
+        PolygonsNumbers.append(numbers)
 
-#    VectorsV = []
-#    lines = []
+    LinesV = []
+    VerticesCoordinates = []
 
-#    for line in Data:
-#        if(line[0]=='v' and line[1]==' '):
-#            VectorsV.append(line[2:-1])
+    for line in Data:
+        if(line[0]=='v' and line[1]==' '):
+            LinesV.append(line[2:-1])
 
-#    for line in VectorsV:
-#        xyz = line.split()
-#        x = int(5*n*float(xyz[1]) + n/2)
-#        y = int(5*m*float(xyz[0]) + m/2)
-#        lines.append([x,y])
+    for line in LinesV:
+        VerticeCoordinates = line.split()
+        x = int(5*n*float(VerticeCoordinates[1]) + n/2)
+        y = int(5*m*float(VerticeCoordinates[0]) + m/2)
+        VerticesCoordinates.append([x,y])
         
-#    for i in Polygons:
-#        ColorPolygon(i)
+    for i in PolygonsNumbers:
+        ColorPolygon(i)
         
-#    image = Image.fromarray(img,'RGB')
-#    image.save("Task10Image.png")
+    image = Image.fromarray(img,'RGB')
+    image.save("Task10Image.png")
 
-#print("7-10 tasks ended up successfully")
+print("7-10 tasks ended up successfully")
 
 #endregion
 
-# Light Models
+# VerticesLightGuro Models
 #region
 
-def CosPolygon(polygon):
+def CosPolygon(polygonNumbers):
     
-    light = [0, 0, 1]
+    VerticesLightGuro = [0, 0, 1]
 
-    line1 = lines[int(polygon[0])-1]
-    line2 = lines[int(polygon[1])-1]
-    line3 = lines[int(polygon[2])-1]
+    line1 = VerticesCoordinates[int(polygonNumbers[0])-1]
+    line2 = VerticesCoordinates[int(polygonNumbers[1])-1]
+    line3 = VerticesCoordinates[int(polygonNumbers[2])-1]
 
     x0 = line1[0]
     y0 = line1[1]
@@ -378,7 +378,7 @@ def CosPolygon(polygon):
     zn = (x1 - x0)*(y1 - y2) - (x1 - x2)*(y1 - y0)
 
     if (xn**2 + yn**2 + zn**2 != 0):
-        return (light[0]*xn + light[1]*yn + light[2]*zn) / math.sqrt(xn**2 + yn**2 + zn**2)
+        return (VerticesLightGuro[0]*xn + VerticesLightGuro[1]*yn + VerticesLightGuro[2]*zn) / math.sqrt(xn**2 + yn**2 + zn**2)
     else:
         return 1
 
@@ -395,9 +395,9 @@ def DrawPixelWithBuffer(x, y, x0, y0, z0, x1, y1, z1, x2, y2, z2, color):
 
 def LightPolygon(polygon, color):
 
-    line1 = lines[int(polygon[0])-1]
-    line2 = lines[int(polygon[1])-1]
-    line3 = lines[int(polygon[2])-1]
+    line1 = VerticesCoordinates[int(polygon[0])-1]
+    line2 = VerticesCoordinates[int(polygon[1])-1]
+    line3 = VerticesCoordinates[int(polygon[2])-1]
 
     CosLight = CosPolygon(polygon)
 
@@ -418,52 +418,52 @@ def LightPolygon(polygon, color):
         for j in range(rect[2], rect[3]):
             DrawPixelWithBuffer(i, j, x0, y0, z0, x1, y1, z1, x2, y2, z2, color)
 
-#with open("model_1.obj",'r') as f:
+with open("model_1.obj",'r') as f:
 
-#    n = 1000
-#    m = 1000
-#    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
-#    Data = f.readlines()
-#    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
+    n = 1000
+    m = 1000
+    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
+    Data = f.readlines()
+    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
     
-#    VectorsF = []
-#    Polygons = []
+    LinesF = []
+    PolygonsNumbers = []
 
-#    for line in Data:
-#        if(line[0]=='f'):
-#            VectorsF.append(line[2:-1])
+    for line in Data:
+        if(line[0]=='f'):
+            LinesF.append(line[2:-1])
 
-#    for line in VectorsF:
-#        xyz = line.split()
-#        numbers = []
+    for line in LinesF:
+        VerticeCoordinates = line.split()
+        numbers = []
 
-#        for i in xyz:
-#            numbers.append(i.split('/')[0])
+        for i in VerticeCoordinates:
+            numbers.append(i.split('/')[0])
 
-#        Polygons.append(numbers)
+        PolygonsNumbers.append(numbers)
 
-#    VectorsV = []
-#    lines = []
+    LinesV = []
+    VerticesCoordinates = []
 
-#    for line in Data:
-#        if(line[0]=='v' and line[1]==' '):
-#            VectorsV.append(line[2:-1])
+    for line in Data:
+        if(line[0]=='v' and line[1]==' '):
+            LinesV.append(line[2:-1])
 
-#    for line in VectorsV:
-#        xyz = line.split()
-#        x = int(5*n*float(xyz[1]) + n/2)
-#        y = int(5*m*float(xyz[0]) + m/2)
-#        z = int(5*n*float(xyz[2]))
-#        lines.append([x, y, z])
+    for line in LinesV:
+        VerticeCoordinates = line.split()
+        x = int(5*n*float(VerticeCoordinates[1]) + n/2)
+        y = int(5*m*float(VerticeCoordinates[0]) + m/2)
+        z = int(5*n*float(VerticeCoordinates[2]))
+        VerticesCoordinates.append([x, y, z])
         
-#    for i in Polygons:
-#        if (CosPolygon(i) < 0):
-#            LightPolygon(i, (150, 150, 150))
+    for i in PolygonsNumbers:
+        if (CosPolygon(i) < 0):
+            LightPolygon(i, (150, 150, 150))
         
-#    image = Image.fromarray(img,'RGB')
-#    image.save("Task14Image.png")
+    image = Image.fromarray(img,'RGB')
+    image.save("Task14Image.png")
 
-#print("11-14 tasks ended up successfully")
+print("11-14 tasks ended up successfully")
 
 #endregion
 
@@ -500,83 +500,81 @@ def Move(x, y, z):
     return np.dot(k, X)
 
 
-#with open("model_1.obj",'r') as f:
+with open("model_1.obj",'r') as f:
 
-#    n = 1000
-#    m = 1000
-#    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
-#    Data = f.readlines()
-#    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
+    n = 1000
+    m = 1000
+    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
+    Data = f.readlines()
+    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
     
-#    VectorsF = []
-#    Polygons = []
+    LinesF = []
+    PolygonsNumbers = []
 
-#    for line in Data:
-#        if(line[0]=='f'):
-#            VectorsF.append(line[2:-1])
+    for line in Data:
+        if(line[0]=='f'):
+            LinesF.append(line[2:-1])
 
-#    for line in VectorsF:
-#        xyz = line.split()
-#        numbers = []
+    for line in LinesF:
+        VerticeCoordinates = line.split()
+        numbers = []
 
-#        for i in xyz:
-#            numbers.append(i.split('/')[0])
+        for i in VerticeCoordinates:
+            numbers.append(i.split('/')[0])
 
-#        Polygons.append(numbers)
+        PolygonsNumbers.append(numbers)
 
-#    VectorsV = []
-#    lines = []
+    LinesV = []
+    VerticesCoordinates = []
 
-#    for line in Data:
-#        if(line[0]=='v' and line[1]==' '):
-#            VectorsV.append(line[2:-1])
+    for line in Data:
+        if(line[0]=='v' and line[1]==' '):
+            LinesV.append(line[2:-1])
 
-#    for line in VectorsV:
-#        xyz = line.split()
+    for line in LinesV:
+        VerticeCoordinates = line.split()
 
-#        xyz = Rotate(float(xyz[0]), float(xyz[1]), float(xyz[2]))
-#        xyz = Move(float(xyz[0]), float(xyz[1]), float(xyz[2]))
-#        xyz = [float(xyz[1]), float(xyz[0]), float(xyz[2])]
+        VerticeCoordinates = Rotate(float(VerticeCoordinates[0]), float(VerticeCoordinates[1]), float(VerticeCoordinates[2]))
+        VerticeCoordinates = Move(float(VerticeCoordinates[0]), float(VerticeCoordinates[1]), float(VerticeCoordinates[2]))
+        VerticeCoordinates = [float(VerticeCoordinates[1]), float(VerticeCoordinates[0]), float(VerticeCoordinates[2])]
 
-#        lines.append([int(xyz[0]), int(xyz[1]), int(5*n*xyz[2])])
+        VerticesCoordinates.append([int(VerticeCoordinates[0]), int(VerticeCoordinates[1]), int(5*n*VerticeCoordinates[2])])
         
-#    for i in Polygons:
-#        if (CosPolygon(i) < 0):
-#            LightPolygon(i, (150, 150, 150))
+    for i in PolygonsNumbers:
+        if (CosPolygon(i) < 0):
+            LightPolygon(i, (150, 150, 150))
         
-#    image = Image.fromarray(img,'RGB')
-#    image.save("Task16Image.png")
+    image = Image.fromarray(img,'RGB')
+    image.save("Task16Image.png")
 
-#print("15-16 tasks ended up successfully")
+print("15-16 tasks ended up successfully")
 
 #endregion
 
-# Guro Light
+# Guro VerticesLightGuro
 #region
 
-def guro(normalsPolygon):
+def GuroVertice(normalsPolygon):
     
-    ilx = 0
-    ily = 0
-    ilz = 1
+    l = [0, 0, 1]
     
     nx = normalsPolygon[0]
     ny = normalsPolygon[1]
     nz = normalsPolygon[2]
 
-    w = nx*nx + ny*ny +nz*nz
-    s = ilx*ilx + ily*ily + ilz*ilz
+    lenNormal = math.sqrt(pow(nx, 2) + pow(ny, 2) + pow(nz, 2))
+    lenLight = math.sqrt(pow(l[0], 2) + pow(l[1], 2) + pow(l[2], 2))
     
-    if (w != 0 and s != 0):
-        return (ilx*nx + ily*ny + ilz*nz)/(math.sqrt(w)*math.sqrt(s))
+    if (lenNormal != 0 and lenLight != 0):
+        return (l[0]*nx + l[1]*ny + l[2]*nz)/(lenNormal*lenLight)
     else:
         return 1
 
-def DrawPixelGuro(x, y, x0, y0, z0, x1, y1, z1, x2, y2, z2, n):
+def DrawPixelGuro(x, y, x0, y0, z0, x1, y1, z1, x2, y2, z2, polygonNormalsNumbers):
 
-    l1 = light[int(n[0]) - 1]
-    l2 = light[int(n[1]) - 1]
-    l3 = light[int(n[2]) - 1]
+    l1 = VerticesLightGuro[int(polygonNormalsNumbers[0]) - 1]
+    l2 = VerticesLightGuro[int(polygonNormalsNumbers[1]) - 1]
+    l3 = VerticesLightGuro[int(polygonNormalsNumbers[2]) - 1]
     VectorBar = Barycentering(x, y, x0, y0, x1, y1, x2, y2)
 
     if (VectorBar[0] >= 0 and VectorBar[1] >= 0 and VectorBar[2] >= 0):
@@ -589,13 +587,11 @@ def DrawPixelGuro(x, y, x0, y0, z0, x1, y1, z1, x2, y2, z2, n):
                        -250 + 200*(VectorBar[0]*l1 + VectorBar[1]*l2  + VectorBar[2]*l3))
 
 
-def GuroLightPolygon(polygon, n):
+def GuroLightPolygon(polygonNumbers, polygonNormalsNumbers):
 
-    line1 = lines[int(polygon[0])-1]
-    line2 = lines[int(polygon[1])-1]
-    line3 = lines[int(polygon[2])-1]
-
-    CosLight = CosPolygon(polygon)
+    line1 = VerticesCoordinates[int(polygonNumbers[0])-1]
+    line2 = VerticesCoordinates[int(polygonNumbers[1])-1]
+    line3 = VerticesCoordinates[int(polygonNumbers[2])-1]
 
     x0 = line1[0]
     y0 = line1[1]
@@ -611,86 +607,8 @@ def GuroLightPolygon(polygon, n):
 
     for i in range(rect[0], rect[1]):
         for j in range(rect[2], rect[3]):
-            DrawPixelGuro(i, j, x0, y0, z0, x1, y1, z1, x2, y2, z2, n)
+            DrawPixelGuro(i, j, x0, y0, z0, x1, y1, z1, x2, y2, z2, polygonNormalsNumbers)
 
-
-#with open("model_1.obj",'r') as f:
-
-#    n = 1000
-#    m = 1000
-#    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
-#    Data = f.readlines()
-#    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
-    
-#    VectorsF = []
-#    Polygons = []
-#    NormPolygons = []
-#    norm = []
-#    normals = []
-#    light = []
-
-#    for line in Data:
-#        if(line[0]=='f'):
-#            VectorsF.append(line[2:-1])
-
-#    for line in VectorsF:
-#        xyz = line.split()
-#        Numbers = []
-#        NormVertices = []
-
-#        for i in xyz:
-#            Numbers.append(i.split('/')[0])
-#            NormVertices.append(i.split('/')[2])
-
-#        Polygons.append(Numbers)
-#        NormPolygons.append(NormVertices)
-
-#    for line in Data:
-#        if((line[0]=='v')& (line[1]=='n') & (line[2]==' ')):
-#            norm.append(line[3:-1])
-
-#    for i in norm:
-#        norms = i.split()
-#        n1 = float(norms[0])
-#        n2 = float(norms[1])
-#        n3 = float(norms[2])
-#        normals.append([n1, n2, n3])
-
-#    for i in normals:
-#        light.append(guro(i))
-
-#    VectorsV = []
-#    lines = []
-
-#    for line in Data:
-#        if(line[0]=='v' and line[1]==' '):
-#            VectorsV.append(line[2:-1])
-
-#    for line in VectorsV:
-#        xyz = line.split()
-
-#        xyz = Rotate(float(xyz[0]), float(xyz[1]), float(xyz[2]))
-#        xyz = Move(float(xyz[0]), float(xyz[1]), float(xyz[2]))
-#        xyz = [float(xyz[1]), float(xyz[0]), float(xyz[2])]
-
-#        lines.append([int(xyz[0]), int(xyz[1]), int(5*n*xyz[2])])
-       
-#    index = 0
-#    for i in Polygons:
-#        if (CosPolygon(i) < 0):
-#            GuroLightPolygon(i, NormPolygons[index])
-#        index += 1
-        
-#    image = Image.fromarray(img,'RGB')
-#    image.save("Task17Image.png")
-
-#print("17 tasks ended up successfully")
-
-
-#endregion
-
-# Texturing
-#region
 
 with open("model_1.obj",'r') as f:
 
@@ -699,70 +617,209 @@ with open("model_1.obj",'r') as f:
     img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
     Data = f.readlines()
     ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
-    
-    VectorsF = []
-    Polygons = []
-    NormPolygons = []
-    norm = []
-    normals = []
-    light = []
 
-    for line in Data:
-        if(line[0]=='f'):
-            VectorsF.append(line[2:-1])
+    LinesV = []
+    LinesVn = []
+    LinesF = []
 
-    for line in VectorsF:
-        xyz = line.split()
-        Numbers = []
-        NormVertices = []
+    VerticesCoordinates = []
+    VerticesNormals = []
+    VerticesLightGuro = []
 
-        for i in xyz:
-            Numbers.append(i.split('/')[0])
-            NormVertices.append(i.split('/')[2])
-
-        Polygons.append(Numbers)
-        NormPolygons.append(NormVertices)
-
-    for line in Data:
-        if((line[0]=='v')& (line[1]=='n') & (line[2]==' ')):
-            norm.append(line[3:-1])
-
-    for i in norm:
-        norms = i.split()
-        n1 = float(norms[0])
-        n2 = float(norms[1])
-        n3 = float(norms[2])
-        normals.append([n1, n2, n3])
-
-    for i in normals:
-        light.append(guro(i))
-
-    VectorsV = []
-    lines = []
+    PolygonsNumbers = []
+    PolygonsNormalsNumbers = []
 
     for line in Data:
         if(line[0]=='v' and line[1]==' '):
-            VectorsV.append(line[2:-1])
+            LinesV.append(line[2:-1])
+    for line in Data:
+        if((line[0]=='v')& (line[1]=='n') & (line[2]==' ')):
+            LinesVn.append(line[3:-1])
+    for line in Data:
+        if(line[0]=='f'):
+            LinesF.append(line[2:-1])
 
-    for line in VectorsV:
-        xyz = line.split()
+    # V
+    for line in LinesV:
+        VerticeCoordinates = line.split()
 
-        xyz = Rotate(float(xyz[0]), float(xyz[1]), float(xyz[2]))
-        xyz = Move(float(xyz[0]), float(xyz[1]), float(xyz[2]))
-        xyz = [float(xyz[1]), float(xyz[0]), float(xyz[2])]
+        VerticeCoordinates = Rotate(float(VerticeCoordinates[0]), float(VerticeCoordinates[1]), float(VerticeCoordinates[2]))
+        VerticeCoordinates = Move(float(VerticeCoordinates[0]), float(VerticeCoordinates[1]), float(VerticeCoordinates[2]))
+        VerticeCoordinates = [float(VerticeCoordinates[1]), float(VerticeCoordinates[0]), float(VerticeCoordinates[2])]
 
-        lines.append([int(xyz[0]), int(xyz[1]), int(5*n*xyz[2])])
-       
-    index = 0
-    for i in Polygons:
-        if (CosPolygon(i) < 0):
-            GuroLightPolygon(i, NormPolygons[index])
-        index += 1
+        VerticesCoordinates.append([int(VerticeCoordinates[0]), int(VerticeCoordinates[1]), int(5*n*VerticeCoordinates[2])])
+
+    # Vn
+    for line in LinesVn:
+        VerticeNormals = line.split()
+        VerticesNormals.append([float(VerticeNormals[0]), float(VerticeNormals[1]), float(VerticeNormals[2])])
+
+
+    # F
+    for line in LinesF:
+        VerticeCoordinates = line.split()
+        Numbers = []
+        NormVertices = []
+        for i in VerticeCoordinates:
+            Numbers.append(i.split('/')[0])
+            NormVertices.append(i.split('/')[2])
+        PolygonsNumbers.append(Numbers)
+        PolygonsNormalsNumbers.append(NormVertices)
+
+    # Guro Light
+    for verticeNormals in VerticesNormals:
+        VerticesLightGuro.append(GuroVertice(verticeNormals))
+
+    # Draw
+    for i in range(len(PolygonsNumbers)):
+        if (CosPolygon(PolygonsNumbers[i]) < 0):
+            GuroLightPolygon(PolygonsNumbers[i], PolygonsNormalsNumbers[i])
+        
+    image = Image.fromarray(img,'RGB')
+    image.save("Task17Image.png")
+
+print("17 tasks ended up successfully")
+
+
+#endregion
+
+# Texturing
+#region
+
+TextureImg = np.array(ImageOps.flip(Image.open("bunny-atlas.jpg")))
+
+def DrawPixelTexture(x, y, x0, y0, z0, x1, y1, z1, x2, y2, z2, polygonNormalsNumbers, polygonTextureNumbers):
+
+    l1 = VerticesLightGuro[int(polygonNormalsNumbers[0]) - 1]
+    l2 = VerticesLightGuro[int(polygonNormalsNumbers[1]) - 1]
+    l3 = VerticesLightGuro[int(polygonNormalsNumbers[2]) - 1]
+
+    u0 = VerticesTextureUV[int(polygonTextureNumbers[0]) - 1][0]
+    v0 = VerticesTextureUV[int(polygonTextureNumbers[0]) - 1][1]
+    u1 = VerticesTextureUV[int(polygonTextureNumbers[1]) - 1][0]
+    v1 = VerticesTextureUV[int(polygonTextureNumbers[1]) - 1][1]
+    u2 = VerticesTextureUV[int(polygonTextureNumbers[2]) - 1][0]
+    v2 = VerticesTextureUV[int(polygonTextureNumbers[2]) - 1][1]
+
+    VectorBar = Barycentering(x, y, x0, y0, x1, y1, x2, y2)
+
+    if (VectorBar[0] >= 0 and VectorBar[1] >= 0 and VectorBar[2] >= 0):
+        ZBarKoef = VectorBar[0]*z0 + VectorBar[1]*z1 + VectorBar[2]*z2
+
+        if ZBarKoef <= ZBuffer[x][y]:
+            ZBuffer[x][y] = ZBarKoef
+            u = int(1024 * (VectorBar[0]*u0 + VectorBar[1]*u1 + VectorBar[2]*u2))
+            v = int(1024 * (VectorBar[0]*v0 + VectorBar[1]*v1 + VectorBar[2]*v2))
+            ShadowMult = 255*(VectorBar[0]*l1 + VectorBar[1]*l2  + VectorBar[2]*l3)
+            Red = int(TextureImg[v, u][0]*(ShadowMult/255.0))
+            Green = int(TextureImg[v, u][1]*(ShadowMult/255.0))
+            Blue = int(TextureImg[v, u][2]*(ShadowMult/255.0))
+            img[x, y] = [Red, Green, Blue]
+
+
+def TexturePolygon(polygonNumbers, polygonNormalsNumbers, polygonTextureNumbers):
+
+    line1 = VerticesCoordinates[int(polygonNumbers[0])-1]
+    line2 = VerticesCoordinates[int(polygonNumbers[1])-1]
+    line3 = VerticesCoordinates[int(polygonNumbers[2])-1]
+
+    x0 = line1[0]
+    y0 = line1[1]
+    z0 = line1[2]
+    x1 = line2[0]
+    y1 = line2[1]
+    z1 = line2[2]
+    x2 = line3[0]
+    y2 = line3[1]
+    z2 = line3[2]
+
+    rect = Rectangle(x0, y0, x1, y1, x2, y2)
+
+    for i in range(rect[0], rect[1]):
+        for j in range(rect[2], rect[3]):
+            DrawPixelTexture(i, j, x0, y0, z0, x1, y1, z1, x2, y2, z2, polygonNormalsNumbers, polygonTextureNumbers)
+
+with open("model_1.obj",'r') as f:
+
+    n = 1000
+    m = 1000
+    img = np.full((n, m, 3), (255, 255, 255), dtype=np.uint8)
+    Data = f.readlines()
+    ZBuffer = [[np.inf for x in range(n)] for x in range(n)]
+
+    LinesV = []
+    LinesVt = []
+    LinesVn = []
+    LinesF = []
+
+    VerticesCoordinates = []
+    VerticesNormals = []
+    VerticesLightGuro = []
+    VerticesTextureUV = []
+
+    PolygonsNumbers = []
+    PolygonsNormalsNumbers = []
+    PolygonsTextureNumbers = []
+
+    for line in Data:
+        if(line[0]=='v' and line[1]==' '):
+            LinesV.append(line[2:-1])
+    for line in Data:
+        if((line[0]=='v')& (line[1]=='t') & (line[2]==' ')):
+            LinesVt.append(line[3:-1])
+    for line in Data:
+        if((line[0]=='v')& (line[1]=='n') & (line[2]==' ')):
+            LinesVn.append(line[3:-1])
+    for line in Data:
+        if(line[0]=='f'):
+            LinesF.append(line[2:-1])
+
+    # V
+    for line in LinesV:
+        VerticeCoordinates = line.split()
+
+        VerticeCoordinates = Rotate(float(VerticeCoordinates[0]), float(VerticeCoordinates[1]), float(VerticeCoordinates[2]))
+        VerticeCoordinates = Move(float(VerticeCoordinates[0]), float(VerticeCoordinates[1]), float(VerticeCoordinates[2]))
+        VerticeCoordinates = [float(VerticeCoordinates[1]), float(VerticeCoordinates[0]), float(VerticeCoordinates[2])]
+
+        VerticesCoordinates.append([int(VerticeCoordinates[0]), int(VerticeCoordinates[1]), int(5*n*VerticeCoordinates[2])])
+
+    # Vt
+    for line in LinesVt:
+        VerticeTextureUV = line.split()
+        VerticesTextureUV.append([float(VerticeTextureUV[0]), float(VerticeTextureUV[1])])
+
+    # Vn
+    for line in LinesVn:
+        VerticeNormals = line.split()
+        VerticesNormals.append([float(VerticeNormals[0]), float(VerticeNormals[1]), float(VerticeNormals[2])])
+
+    # F
+    for line in LinesF:
+        SplitLine = line.split()
+        PolygonNumbers = []
+        PolygonTextureNumbers = []
+        PolygonNormalsNumbers = []
+        for i in SplitLine:
+            PolygonNumbers.append(i.split('/')[0])
+            PolygonTextureNumbers.append(i.split('/')[1])
+            PolygonNormalsNumbers.append(i.split('/')[2])
+        PolygonsNumbers.append(PolygonNumbers)
+        PolygonsTextureNumbers.append(PolygonTextureNumbers)
+        PolygonsNormalsNumbers.append(PolygonNormalsNumbers)
+
+    # Guro Light
+    for verticeNormals in VerticesNormals:
+        VerticesLightGuro.append(GuroVertice(verticeNormals))
+
+    # Draw
+    for i in range(len(PolygonsNumbers)):
+        if (CosPolygon(PolygonsNumbers[i]) < 0):
+            TexturePolygon(PolygonsNumbers[i], PolygonsNormalsNumbers[i], PolygonsTextureNumbers[i])
         
     image = Image.fromarray(img,'RGB')
     image.save("Task18Image.png")
 
 print("18 tasks ended up successfully")
-
 
 #endregion
